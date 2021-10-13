@@ -20,7 +20,7 @@ impl<T> Node<T>
 where
     T: Copy + Eq + Hash,
 {
-    pub fn from_vec(vec: &Vec<T>) -> Result<Node<T>, &'static str> {
+    pub fn new_from_vec(vec: &[T]) -> Result<Node<T>, &'static str> {
         // count frequency of each element and store it in a map
         let mut map: HashMap<T, Frequency> = HashMap::new();
         for e in vec {
@@ -35,7 +35,7 @@ where
 
         while list.len() > 1 {
             // sort list by frequency
-            list.sort_by(|a, b| a.get_freq().cmp(&b.get_freq()));
+            list.sort_by_key(|a| a.get_freq());
 
             // combine the first two Nodes
             let left = list.remove(0);
@@ -53,8 +53,8 @@ where
         // return first (and only) node
         // error if no node is in list
         match list.get(0) {
-            Some(node) => return Ok(node.clone()),
-            None => return Err("Creation of Huffman tree failed! No elements were passed."),
+            Some(node) => Ok(node.clone()),
+            None => Err("Creation of Huffman tree failed! No elements were passed."),
         }
     }
 
@@ -67,8 +67,8 @@ where
 }
 
 impl Node<char> {
-    pub fn from_str(s: &str) -> Result<Node<char>, &'static str> {
+    pub fn new_from_str(s: &str) -> Result<Node<char>, &'static str> {
         let char_vec: Vec<char> = s.chars().collect();
-        Self::from_vec(&char_vec)
+        Self::new_from_vec(&char_vec)
     }
 }
