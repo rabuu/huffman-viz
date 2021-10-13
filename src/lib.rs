@@ -20,6 +20,7 @@ impl<T> Node<T>
 where
     T: Copy + Eq + Hash,
 {
+    // create a tree by converting a vector
     pub fn new_from_vec(vec: &[T]) -> Result<Node<T>, &'static str> {
         // count frequency of each element and store it in a map
         let mut map: HashMap<T, Frequency> = HashMap::new();
@@ -33,6 +34,7 @@ where
             list.push(Node::Tail { val: e, freq: f });
         }
 
+        // repeat until there is only one node left
         while list.len() > 1 {
             // sort list by frequency
             list.sort_by_key(|a| a.get_freq());
@@ -58,6 +60,7 @@ where
         }
     }
 
+    // getter method for frequency value
     fn get_freq(&self) -> Frequency {
         match self {
             Self::Tail { freq, .. } => *freq,
@@ -67,6 +70,7 @@ where
 }
 
 impl Node<char> {
+    // create a tree by converting a &str
     pub fn new_from_str(s: &str) -> Result<Node<char>, &'static str> {
         let char_vec: Vec<char> = s.chars().collect();
         Self::new_from_vec(&char_vec)
