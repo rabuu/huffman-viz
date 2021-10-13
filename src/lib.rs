@@ -72,16 +72,3 @@ impl Node<char> {
         Self::from_vec(&char_vec)
     }
 }
-
-// example how a huffman tree could look like
-fn _foo() {
-    let _ = Node::Link {
-        freq: 5,
-        left: Box::new(Node::Link {
-            freq: 3,
-            left: Box::new(Node::Tail { val: 'O', freq: 1 }),
-            right: Box::new(Node::Tail { val: 'P', freq: 2 }),
-        }),
-        right: Box::new(Node::Tail { val: 'R', freq: 2 }),
-    };
-}
