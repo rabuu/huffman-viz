@@ -3,6 +3,7 @@ use std::hash::Hash;
 
 type Frequency = u32;
 
+#[derive(Debug, Clone)]
 pub enum Node<T> {
     Tail {
         val: T,
@@ -15,19 +16,60 @@ pub enum Node<T> {
     },
 }
 
-impl<T: Copy + Eq + Hash> Node<T> {
-    pub fn from_vec(vec: &Vec<T>) -> Node<T> {
-
-        // create map & fill it with all the given elements and their frequency
+impl<T> Node<T>
+where
+    T: Copy + Eq + Hash,
+{
+    pub fn from_vec(vec: &Vec<T>) -> Result<Node<T>, &'static str> {
+        // count frequency of each element and store it in a map
         let mut map: HashMap<T, Frequency> = HashMap::new();
         for e in vec {
             *map.entry(*e).or_insert(0) += 1;
         }
 
-        Node::Tail {
-            val: vec[0],
-            freq: 0,
+        // convert map into list of nodes
+        let mut list: Vec<Node<T>> = Vec::new();
+        for (e, f) in map {
+            list.push(Node::Tail { val: e, freq: f });
         }
+
+        while list.len() > 1 {
+            // sort list by frequency
+            list.sort_by(|a, b| a.get_freq().cmp(&b.get_freq()));
+
+            // combine the first two Nodes
+            let left = list.remove(0);
+            let right = list.remove(0);
+            list.insert(
+                0,
+                Node::Link {
+                    freq: left.get_freq() + right.get_freq(),
+                    left: Box::new(left),
+                    right: Box::new(right),
+                },
+            );
+        }
+
+        // return first (and only) node
+        // error if no node is in list
+        match list.get(0) {
+            Some(node) => return Ok(node.clone()),
+            None => return Err("Creation of Huffman tree failed! No elements were passed."),
+        }
+    }
+
+    fn get_freq(&self) -> Frequency {
+        match self {
+            Self::Tail { freq, .. } => *freq,
+            Self::Link { freq, .. } => *freq,
+        }
+    }
+}
+
+impl Node<char> {
+    pub fn from_str(s: &str) -> Result<Node<char>, &'static str> {
+        let char_vec: Vec<char> = s.chars().collect();
+        Self::from_vec(&char_vec)
     }
 }
 
