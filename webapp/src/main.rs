@@ -1,55 +1,48 @@
 use yew::prelude::*;
 
 enum Msg {
-    AddOne,
+    UpdateInput(String),
 }
 
-struct Model {
-    // `ComponentLink` is like a reference to a component.
-    // It can be used to send messages to the component
+struct App {
     link: ComponentLink<Self>,
-    value: i64,
+    input: String,
 }
 
-impl Component for Model {
+impl Component for App {
     type Message = Msg;
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
         Self {
             link,
-            value: 0,
+            input: String::from(""),
         }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            Msg::AddOne => {
-                self.value += 1;
-                // the value has changed so we need to
-                // re-render for it to appear on the page
-                true
+            Msg::UpdateInput(input) => {
+                self.input = input;
+                false
             }
         }
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        // Should only return "true" if new properties are different to
-        // previously received properties.
-        // This component has no properties so we will always return "false".
         false
     }
 
     fn view(&self) -> Html {
+        let oninput = self.link.callback(|input: InputData| Msg::UpdateInput(input.value));
         html! {
             <div>
-                <button onclick=self.link.callback(|_| Msg::AddOne)>{ "+1" }</button>
-                <p>{ self.value }</p>
+                <input type="text" placeholder="Type message here" oninput=oninput />
             </div>
         }
     }
 }
 
 fn main() {
-    yew::start_app::<Model>();
+    yew::start_app::<App>();
 }
