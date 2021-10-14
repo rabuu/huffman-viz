@@ -13,7 +13,6 @@ where
     T: Eq + Hash,
 {
     pub fn new(vec: Vec<T>) -> Tree<T> {
-
         // count frequency of each element and store it in a map
         let mut map: HashMap<T, Frequency> = HashMap::new();
         for e in vec {
@@ -74,8 +73,7 @@ enum Node<T> {
     },
 }
 
-impl<T> Node<T>
-{
+impl<T> Node<T> {
     // getter method for frequency value
     fn get_freq(&self) -> Frequency {
         match self {
