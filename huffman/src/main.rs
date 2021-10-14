@@ -1,7 +1,8 @@
-use huffman::Node;
+use huffman::Tree;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let tree = Node::new_from_str("Lorem ipsum dolor sit amet")?;
+    let mut tree = Tree::new_from_string(String::from("lorem ipsum"));
+    tree.build();
     println!("{:#?}", tree);
     Ok(())
 }
