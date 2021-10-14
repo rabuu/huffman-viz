@@ -26,12 +26,14 @@ where
             arena.push(Node::Tail { val: e, freq: f });
         }
 
+        arena.sort_by_key(|node| node.get_freq());
+
         Tree { arena }
     }
 
     pub fn step(&mut self) {
         // sort nodes in arena by frequency
-        self.arena.sort_by_key(|a| a.get_freq());
+        self.arena.sort_by_key(|node| node.get_freq());
 
         // combine the first two nodes
         let left = self.arena.remove(0);
