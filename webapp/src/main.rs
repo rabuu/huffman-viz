@@ -71,22 +71,30 @@ impl Component for App {
 
         html! {
             <div>
-                <div>
+                <div id="controll-container">
                     <input type="text" placeholder="Type message here" oninput=input_changed />
                     <button onclick=create_tree>{ "Create Tree" }</button>
-                    <div style=match show_tree {
-                        true => "display: block",
-                        false => "display: none",
-                    }>
+                    <div
+                        style=match show_tree {
+                            true => "display: block",
+                            false => "display: none",
+                        }
+                    >
                         <button onclick=step>{ "Step" }</button>
                         <button onclick=build>{ "Build" }</button>
                     </div>
                 </div>
-                <div style=match show_tree {
-                    true => "visibility: visible",
-                    false => "visibility: hidden",
-                } id="tree-container">
-                    { match self.tree { Some(ref tree) => format!("{:#?}", tree), None => "".to_string() } }
+                <div
+                    style=match show_tree {
+                        true => "display: block",
+                        false => "display: none",
+                    }
+                    id="tree-container"
+                >
+                    <pre>{ match self.tree { Some(ref tree) => format!("{:#?}", tree), None => "".to_string() } }</pre>
+                </div>
+                <div id="debug-container">
+                    { format!("input: {}", self.input) }
                 </div>
             </div>
         }
