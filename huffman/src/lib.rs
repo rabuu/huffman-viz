@@ -5,7 +5,7 @@ type Frequency = u32;
 
 #[derive(Debug, Clone)]
 pub struct Tree<T> {
-    arena: Vec<Node<T>>,
+    pub arena: Vec<Node<T>>,
 }
 
 impl<T> Tree<T>
@@ -61,7 +61,7 @@ impl Tree<char> {
 }
 
 #[derive(Debug, Clone)]
-enum Node<T> {
+pub enum Node<T> {
     Tail {
         val: T,
         freq: Frequency,
@@ -75,7 +75,7 @@ enum Node<T> {
 
 impl<T> Node<T> {
     // getter method for frequency value
-    fn get_freq(&self) -> Frequency {
+    pub fn get_freq(&self) -> Frequency {
         match self {
             Self::Tail { freq, .. } => *freq,
             Self::Link { freq, .. } => *freq,

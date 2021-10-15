@@ -1,4 +1,4 @@
-use huffman::Tree;
+use huffman::{Node, Tree};
 use yew::prelude::*;
 
 enum Msg {
@@ -61,27 +61,47 @@ impl Component for App {
     fn view(&self) -> Html {
         let show_tree = self.tree.is_some();
 
-        let input_changed = self
+        let msg_input_changed = self
             .link
             .callback(|input: InputData| Msg::UpdateInput(input.value));
 
-        let create_tree = self.link.callback(|_| Msg::CreateTree);
-        let step = self.link.callback(|_| Msg::Step);
-        let build = self.link.callback(|_| Msg::Build);
+        let msg_create_tree = self.link.callback(|_| Msg::CreateTree);
+        let msg_step = self.link.callback(|_| Msg::Step);
+        let msg_build = self.link.callback(|_| Msg::Build);
+
+        fn view_node(node: &Node<char>) -> Html {
+            match node {
+                Node::Tail {freq, val} => {
+                    html!(
+                        <p>{format!("Tail: freq -> {}, val -> {}", freq, val)}</p>
+                    )
+                }
+                Node::Link {freq, left, right} => {
+                    html!(
+                        <div>
+                            {format!("Link: freq -> {} {{", freq)}
+                            {view_node(left)}
+                            {view_node(right)}
+                            {"}"}
+                        </div>
+                    )
+                }
+            }
+        }
 
         html! {
             <div>
                 <div id="controll-container">
-                    <input type="text" placeholder="Type message here" oninput=input_changed />
-                    <button onclick=create_tree>{ "Create Tree" }</button>
+                    <input type="text" placeholder="Type message here" oninput=msg_input_changed />
+                    <button onclick=msg_create_tree>{ "Create Tree" }</button>
                     <div
                         style=match show_tree {
                             true => "display: block",
                             false => "display: none",
                         }
                     >
-                        <button onclick=step>{ "Step" }</button>
-                        <button onclick=build>{ "Build" }</button>
+                        <button onclick=msg_step>{ "Step" }</button>
+                        <button onclick=msg_build>{ "Build" }</button>
                     </div>
                 </div>
                 <div
@@ -91,10 +111,17 @@ impl Component for App {
                     }
                     id="tree-container"
                 >
-                    <pre>{ match self.tree { Some(ref tree) => format!("{:#?}", tree), None => "".to_string() } }</pre>
+                    <pre>{ match self.tree {
+                        Some(ref tree) => html!({for tree.arena.iter().map(view_node)}),
+                        None => html!(),
+                    } }</pre>
                 </div>
                 <div id="debug-container">
                     { format!("input: {}", self.input) }
+                <pre>{ match self.tree {
+                    Some(ref tree) => format!("{:#?}", tree),
+                    None => String::from(""),
+                } }</pre>
                 </div>
             </div>
         }
