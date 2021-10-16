@@ -42,3 +42,8 @@ body {
 .tail {
 	border-radius: 15px;
 }
+
+.branches-container {
+	display: flex;
+	flex-direction: row;
+}

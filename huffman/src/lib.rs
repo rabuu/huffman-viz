@@ -30,7 +30,11 @@ where
         Tree { arena }
     }
 
-    pub fn step(&mut self) {
+    pub fn step(&mut self) -> Result<(), &'static str> {
+        if self.arena.len() < 2 {
+            return Err("Step impossible, not enough nodes in arena.");
+        }
+
         // sort nodes in arena by frequency
         self.arena.sort_by_key(|node| node.get_freq());
 
@@ -45,11 +49,12 @@ where
                 right: Box::new(right),
             },
         );
+        Ok(())
     }
 
     pub fn build(&mut self) {
         while self.arena.len() > 1 {
-            self.step();
+            self.step().unwrap();
         }
     }
 }

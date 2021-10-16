@@ -37,6 +37,7 @@ impl Component for App {
                 self.tree = Some(tree);
                 true
             }
+            #[allow(unused_must_use)]
             Msg::Step => {
                 self.tree
                     .as_mut()
@@ -84,8 +85,10 @@ impl Component for App {
                             <div class="node link">
                                 {format!("{}", freq)}
                             </div>
-                            {view_node(left)}
-                            {view_node(right)}
+                            <div class="branches-container">
+                                {view_node(left)}
+                                {view_node(right)}
+                            </div>
                         </div>
                     )
                 }
