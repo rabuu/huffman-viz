@@ -73,16 +73,19 @@ impl Component for App {
             match node {
                 Node::Tail {freq, val} => {
                     html!(
-                        <p>{format!("Tail: freq -> {}, val -> {}", freq, val)}</p>
+                        <div class="node tail">
+                            {format!("{} ({})", freq, val)}
+                        </div>
                     )
                 }
                 Node::Link {freq, left, right} => {
                     html!(
-                        <div>
-                            {format!("Link: freq -> {} {{", freq)}
+                        <div class="link-container">
+                            <div class="node link">
+                                {format!("{}", freq)}
+                            </div>
                             {view_node(left)}
                             {view_node(right)}
-                            {"}"}
                         </div>
                     )
                 }
@@ -106,15 +109,15 @@ impl Component for App {
                 </div>
                 <div
                     style=match show_tree {
-                        true => "display: block",
+                        true => "display: flex",
                         false => "display: none",
                     }
                     id="tree-container"
                 >
-                    <pre>{ match self.tree {
+                    { match self.tree {
                         Some(ref tree) => html!({for tree.arena.iter().map(view_node)}),
                         None => html!(),
-                    } }</pre>
+                    } }
                 </div>
                 <div id="debug-container">
                     { format!("input: {}", self.input) }
