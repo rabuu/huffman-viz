@@ -102,9 +102,10 @@ impl Component for App {
                     <button onclick=msg_create_tree>{ "Create Tree" }</button>
                     <div
                         style=match show_tree {
-                            true => "display: block",
+                            true => "display: flex",
                             false => "display: none",
                         }
+                        id="step-build-container"
                     >
                         <button onclick=msg_step>{ "Step" }</button>
                         <button onclick=msg_build>{ "Build" }</button>
