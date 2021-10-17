@@ -13,6 +13,7 @@ struct App {
     link: ComponentLink<Self>,
     input: String,
     tree: Option<Tree<char>>,
+    show_code_table: bool,
 }
 
 impl Component for App {
@@ -24,6 +25,7 @@ impl Component for App {
             link,
             input: String::from(""),
             tree: None,
+            show_code_table: false,
         }
     }
 
@@ -36,6 +38,7 @@ impl Component for App {
             Msg::CreateTree => {
                 let tree = Tree::new_from_string(self.input.clone());
                 self.tree = Some(tree);
+                self.show_code_table = false;
                 true
             }
             Msg::Step => {
@@ -54,6 +57,7 @@ impl Component for App {
                 true
             }
             Msg::ShowCodeTable => {
+                self.show_code_table = true;
                 true
             }
         }
@@ -64,9 +68,13 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let some_tree = self.tree.is_some();
+        let some_tree = match &self.tree {
+            Some(tree) => tree.get_arena().len() > 0,
+            None => false,
+        };
 
-        let step_build_container_style = match some_tree && !self.tree.as_ref().unwrap().is_built() {
+        let step_build_container_style = match some_tree && !self.tree.as_ref().unwrap().is_built()
+        {
             true => "display: flex",
             false => "display: none",
         };
@@ -76,7 +84,13 @@ impl Component for App {
             false => "display: none",
         };
 
-        let code_table_btn_container_style = match some_tree && self.tree.as_ref().unwrap().is_built() {
+        let code_table_btn_container_style =
+            match some_tree && self.tree.as_ref().unwrap().is_built() {
+                true => "display: flex",
+                false => "display: none",
+            };
+
+        let code_table_container_style = match self.show_code_table {
             true => "display: flex",
             false => "display: none",
         };
@@ -98,6 +112,28 @@ impl Component for App {
         let view_tree_debug = match self.tree {
             Some(ref tree) => format!("{:#?}", tree),
             None => String::from(""),
+        };
+
+        let code_table = match &self.tree {
+            Some(tree) => tree.generate_code_table(),
+            None => Err("Code table could not be generated because there is no tree."),
+        };
+        let view_code_table = match code_table {
+            Ok(table) => {
+                html!(
+                <table>
+                    {for table.iter().map(|(val, bv)| {
+                        html!(
+                            <tr>
+                                <th>{val}</th>
+                                <th>{for bv.iter().map(|b| match b { true => "1", false => "0" })}</th>
+                            </tr>
+                        )
+                    })}
+                </table>
+                 )
+            }
+            Err(_) => html!(),
         };
 
         fn view_node(node: &Node<char>) -> Html {
@@ -141,6 +177,9 @@ impl Component for App {
                 </div>
                 <div style=tree_container_style id="tree-container">
                     { view_tree }
+                </div>
+                <div style=code_table_container_style id="code-table-container">
+                    { view_code_table }
                 </div>
                 <div id="debug-container">
                     { format!("input: {}", self.input) }

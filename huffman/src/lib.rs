@@ -95,11 +95,11 @@ where
 
         let mut table: HashMap<T, Vec<bool>> = HashMap::new();
 
-        if let Node::Link {..} = self.arena[0] {
+        if let Some(Node::Link {..}) = self.arena.get(0) {
             for node in self.arena.iter() {
                 add_table_entry( &mut table, node, &[]);
             }
-        } else if let Node::Tail {val, ..} = &self.arena[0] {
+        } else if let Some(Node::Tail {val, ..}) = &self.arena.get(0) {
             table.insert(val.clone(), vec![true]);
         }
 
