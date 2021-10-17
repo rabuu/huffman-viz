@@ -141,7 +141,7 @@ impl Component for App {
                 Node::Tail { freq, val } => {
                     html!(
                         <div class="node tail">
-                            {format!("{} ({})", freq, val)}
+                            {format!("{} ({})", val, freq)}
                         </div>
                     )
                 }
@@ -149,7 +149,7 @@ impl Component for App {
                     html!(
                         <div class="link-container">
                             <div class="node link">
-                                {format!("{}", freq)}
+                                {format!("({})", freq)}
                             </div>
                             <div class="branches-container">
                                 {view_node(left)}
