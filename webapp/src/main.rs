@@ -72,14 +72,14 @@ impl Component for App {
 
         fn view_node(node: &Node<char>) -> Html {
             match node {
-                Node::Tail {freq, val} => {
+                Node::Tail { freq, val } => {
                     html!(
                         <div class="node tail">
                             {format!("{} ({})", freq, val)}
                         </div>
                     )
                 }
-                Node::Link {freq, left, right} => {
+                Node::Link { freq, left, right } => {
                     html!(
                         <div class="link-container">
                             <div class="node link">
