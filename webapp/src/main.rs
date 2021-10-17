@@ -62,6 +62,16 @@ impl Component for App {
     fn view(&self) -> Html {
         let show_tree = self.tree.is_some();
 
+        let step_build_container_style = match show_tree && !(*self.tree.as_ref().unwrap()).is_built() {
+            true => "display: flex",
+            false => "display: none",
+        };
+
+        let tree_container_style = match show_tree {
+            true => "display: flex",
+            false => "display: none",
+        };
+
         let msg_input_changed = self
             .link
             .callback(|input: InputData| Msg::UpdateInput(input.value));
@@ -69,6 +79,16 @@ impl Component for App {
         let msg_create_tree = self.link.callback(|_| Msg::CreateTree);
         let msg_step = self.link.callback(|_| Msg::Step);
         let msg_build = self.link.callback(|_| Msg::Build);
+
+        let view_tree = match self.tree {
+            Some(ref tree) => html!({for tree.get_arena().iter().map(view_node)}),
+            None => html!(),
+        };
+
+        let view_tree_debug = match self.tree {
+            Some(ref tree) => format!("{:#?}", tree),
+            None => String::from(""),
+        };
 
         fn view_node(node: &Node<char>) -> Html {
             match node {
@@ -101,35 +121,17 @@ impl Component for App {
                 <div id="controll-container">
                     <input type="text" placeholder="Type message here" oninput=msg_input_changed />
                     <button onclick=msg_create_tree>{ "Create Tree" }</button>
-                    <div
-                        style=match show_tree && !self.tree.as_ref().unwrap().is_built() {
-                            true => "display: flex",
-                            false => "display: none",
-                        }
-                        id="step-build-container"
-                    >
+                    <div style=step_build_container_style id="step-build-container">
                         <button onclick=msg_step>{ "Step" }</button>
                         <button onclick=msg_build>{ "Build" }</button>
                     </div>
                 </div>
-                <div
-                    style=match show_tree {
-                        true => "display: flex",
-                        false => "display: none",
-                    }
-                    id="tree-container"
-                >
-                    { match self.tree {
-                        Some(ref tree) => html!({for tree.get_arena().iter().map(view_node)}),
-                        None => html!(),
-                    } }
+                <div style=tree_container_style id="tree-container">
+                    { view_tree }
                 </div>
                 <div id="debug-container">
                     { format!("input: {}", self.input) }
-                <pre>{ match self.tree {
-                    Some(ref tree) => format!("{:#?}", tree),
-                    None => String::from(""),
-                } }</pre>
+                <pre>{ view_tree_debug }</pre>
                 </div>
                 <div id="src-code">
                     <a href="https://gitlab.com/rabuu/huffman-viz">{"source code"}</a>
