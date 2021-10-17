@@ -101,7 +101,7 @@ impl Component for App {
                     <input type="text" placeholder="Type message here" oninput=msg_input_changed />
                     <button onclick=msg_create_tree>{ "Create Tree" }</button>
                     <div
-                        style=match show_tree {
+                        style=match show_tree && !self.tree.as_ref().unwrap().is_built() {
                             true => "display: flex",
                             false => "display: none",
                         }
