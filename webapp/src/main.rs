@@ -97,6 +97,7 @@ impl Component for App {
 
         html! {
             <div>
+                <h1>{"Huffman Visualizer"}</h1>
                 <div id="controll-container">
                     <input type="text" placeholder="Type message here" oninput=msg_input_changed />
                     <button onclick=msg_create_tree>{ "Create Tree" }</button>
@@ -129,6 +130,9 @@ impl Component for App {
                     Some(ref tree) => format!("{:#?}", tree),
                     None => String::from(""),
                 } }</pre>
+                </div>
+                <div id="src-code">
+                    <a href="https://gitlab.com/rabuu/huffman-viz">{"source code"}</a>
                 </div>
             </div>
         }

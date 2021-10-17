@@ -1,6 +1,8 @@
 body {
 	background-color: #1d2021 !important;
 	color: #ebdbb2 !important;
+	font-family: monospace;
+	text-align: center;
 }
 
 #controll-container {
@@ -16,6 +18,7 @@ body {
 #controll-container input {
 	color: #282828 !important;
 	background-color: #ebdbb2;
+	max-width: 45vw;
 	border: 2px solid #282828 !important;
 	font-size: 120%;
 }
@@ -25,7 +28,7 @@ body {
 	text-transform: uppercase;
 	text-decoration: none;
 	background: #ebdbb2;
-	padding: 10px;
+	padding: 10px 3vw;
 	border: 2px solid #282828 !important;
 	display: inline-block;
 	transition: all 0.4s ease 0s;
@@ -86,4 +89,20 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: start;
+}
+
+#src-code {
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#src-code a {
+	color: #ebdbb2 !important;
+	text-decoration: none;
+}
+
+#src-code a:hover {
+	text-decoration: underline dotted;
 }
