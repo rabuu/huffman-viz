@@ -165,7 +165,7 @@ impl Component for App {
             <div>
                 <h1>{"Huffman Visualizer"}</h1>
                 <div id="controll-container">
-                    <input type="text" placeholder="Type message here" oninput=msg_input_changed />
+                    <input type="text" placeholder="Type something" oninput=msg_input_changed />
                     <button onclick=msg_create_tree>{ "Create Tree" }</button>
                     <div style=step_build_container_style id="step-build-container">
                         <button onclick=msg_step>{ "Step" }</button>
