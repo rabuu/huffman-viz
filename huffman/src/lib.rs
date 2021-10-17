@@ -10,11 +10,11 @@ pub struct Tree<T> {
 
 impl<T> Tree<T>
 where
-    T: Eq + Hash,
+    T: Eq + Hash + Clone,
 {
     pub fn new(vec: Vec<T>) -> Tree<T> {
         // count frequency of each element and store it in a map
-        let mut map: HashMap<T, Frequency> = HashMap::new();
+        let mut map: HashMap<T, Frequency> = HashMap::with_capacity(vec.len());
         for e in vec {
             *map.entry(e).or_insert(0) += 1;
         }
@@ -62,14 +62,48 @@ where
         }
     }
 
+    // check if tree is completely built
+    pub fn is_built(&self) -> bool {
+        self.arena.len() < 2
+    }
+
     // getter method for arena
     pub fn get_arena(&self) -> &[Node<T>] {
         &self.arena
     }
 
-    // check if tree is completely built
-    pub fn is_built(&self) -> bool {
-        self.arena.len() < 2
+    // generate code table
+    pub fn generate_code_table(&self) -> Result<HashMap<T, Vec<bool>>, &'static str> {
+
+        if !self.is_built() {
+            return Err("Cannot generate a code table from a tree that is not built.");
+        }
+
+        fn add_table_entry<E>(table: &mut HashMap<E, Vec<bool>>, node: &Node<E>, pre_bits: &[bool])
+        where E: Eq + Hash + Clone
+        {
+            match node {
+                Node::Tail { val, .. } => {
+                    table.insert(val.clone(), pre_bits.to_vec());
+                }
+                Node::Link { left, right, .. } => {
+                    add_table_entry( table, left, &[pre_bits, &[true]].concat());
+                    add_table_entry( table, right, &[pre_bits, &[false]].concat());
+                }
+            };
+        }
+
+        let mut table: HashMap<T, Vec<bool>> = HashMap::new();
+
+        if let Node::Link {..} = self.arena[0] {
+            for node in self.arena.iter() {
+                add_table_entry( &mut table, node, &[]);
+            }
+        } else if let Node::Tail {val, ..} = &self.arena[0] {
+            table.insert(val.clone(), vec![true]);
+        }
+
+        Ok(table)
     }
 }
 
