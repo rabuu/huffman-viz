@@ -6,6 +6,7 @@ enum Msg {
     CreateTree,
     Step,
     Build,
+    ShowCodeTable,
 }
 
 struct App {
@@ -37,12 +38,12 @@ impl Component for App {
                 self.tree = Some(tree);
                 true
             }
-            #[allow(unused_must_use)]
             Msg::Step => {
                 self.tree
                     .as_mut()
                     .expect("Called step method on non-existent tree.")
-                    .step();
+                    .step()
+                    .unwrap_or(());
                 true
             }
             Msg::Build => {
@@ -50,6 +51,9 @@ impl Component for App {
                     .as_mut()
                     .expect("Called build method on non-existent tree.")
                     .build();
+                true
+            }
+            Msg::ShowCodeTable => {
                 true
             }
         }
@@ -60,14 +64,19 @@ impl Component for App {
     }
 
     fn view(&self) -> Html {
-        let show_tree = self.tree.is_some();
+        let some_tree = self.tree.is_some();
 
-        let step_build_container_style = match show_tree && !(*self.tree.as_ref().unwrap()).is_built() {
+        let step_build_container_style = match some_tree && !self.tree.as_ref().unwrap().is_built() {
             true => "display: flex",
             false => "display: none",
         };
 
-        let tree_container_style = match show_tree {
+        let tree_container_style = match some_tree {
+            true => "display: flex",
+            false => "display: none",
+        };
+
+        let code_table_btn_container_style = match some_tree && self.tree.as_ref().unwrap().is_built() {
             true => "display: flex",
             false => "display: none",
         };
@@ -79,6 +88,7 @@ impl Component for App {
         let msg_create_tree = self.link.callback(|_| Msg::CreateTree);
         let msg_step = self.link.callback(|_| Msg::Step);
         let msg_build = self.link.callback(|_| Msg::Build);
+        let msg_show_code_table = self.link.callback(|_| Msg::ShowCodeTable);
 
         let view_tree = match self.tree {
             Some(ref tree) => html!({for tree.get_arena().iter().map(view_node)}),
@@ -124,6 +134,9 @@ impl Component for App {
                     <div style=step_build_container_style id="step-build-container">
                         <button onclick=msg_step>{ "Step" }</button>
                         <button onclick=msg_build>{ "Build" }</button>
+                    </div>
+                    <div style=code_table_btn_container_style id="code-table-btn-container">
+                        <button onclick=msg_show_code_table>{ "Show Code Table" }</button>
                     </div>
                 </div>
                 <div style=tree_container_style id="tree-container">
