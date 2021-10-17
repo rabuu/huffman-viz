@@ -118,7 +118,7 @@ impl Component for App {
                     id="tree-container"
                 >
                     { match self.tree {
-                        Some(ref tree) => html!({for tree.arena.iter().map(view_node)}),
+                        Some(ref tree) => html!({for tree.get_arena().iter().map(view_node)}),
                         None => html!(),
                     } }
                 </div>

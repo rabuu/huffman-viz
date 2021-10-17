@@ -5,7 +5,7 @@ type Frequency = u32;
 
 #[derive(Debug, Clone)]
 pub struct Tree<T> {
-    pub arena: Vec<Node<T>>,
+    arena: Vec<Node<T>>,
 }
 
 impl<T> Tree<T>
@@ -25,11 +25,13 @@ where
             arena.push(Node::Tail { val: e, freq: f });
         }
 
+        // sort nodes in arena by frequency
         arena.sort_by_key(|node| node.get_freq());
 
         Tree { arena }
     }
 
+    // do one step of the algorithm
     pub fn step(&mut self) -> Result<(), &'static str> {
         if self.arena.len() < 2 {
             return Err("Step impossible, not enough nodes in arena.");
@@ -49,13 +51,20 @@ where
                 right: Box::new(right),
             },
         );
+
         Ok(())
     }
 
+    // build the entire tree
     pub fn build(&mut self) {
         while self.arena.len() > 1 {
             self.step().unwrap();
         }
+    }
+
+    // getter method for arena
+    pub fn get_arena(&self) -> &[Node<T>] {
+        &self.arena
     }
 }
 
