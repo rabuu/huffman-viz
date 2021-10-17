@@ -33,8 +33,8 @@ where
 
     // do one step of the algorithm
     pub fn step(&mut self) -> Result<(), &'static str> {
-        if self.arena.len() < 2 {
-            return Err("Step impossible, not enough nodes in arena.");
+        if self.is_built() {
+            return Err("Step impossible, tree already completely built.");
         }
 
         // sort nodes in arena by frequency
@@ -57,7 +57,7 @@ where
 
     // build the entire tree
     pub fn build(&mut self) {
-        while self.arena.len() > 1 {
+        while !self.is_built() {
             self.step().unwrap();
         }
     }
@@ -65,6 +65,11 @@ where
     // getter method for arena
     pub fn get_arena(&self) -> &[Node<T>] {
         &self.arena
+    }
+
+    // check if tree is completely built
+    pub fn is_built(&self) -> bool {
+        self.arena.len() < 2
     }
 }
 
