@@ -69,7 +69,7 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let some_tree = match &self.tree {
-            Some(tree) => tree.get_arena().len() > 0,
+            Some(tree) => !tree.get_arena().is_empty(),
             None => false,
         };
 
@@ -138,21 +138,28 @@ impl Component for App {
 
         let view_encoded_input = match code_table {
             Ok(ref table) => {
-                let binary: String = self.input.chars().map(|c| {
-                    table.get(&c).unwrap().iter().map(|b| {
-                        match b {
-                            true => "1",
-                            false => "0",
-                        }
-                    }).collect::<String>()
-                }).collect();
+                let binary: String = self
+                    .input
+                    .chars()
+                    .map(|c| {
+                        table
+                            .get(&c)
+                            .unwrap()
+                            .iter()
+                            .map(|b| match b {
+                                true => "1",
+                                false => "0",
+                            })
+                            .collect::<String>()
+                    })
+                    .collect();
                 html!(
-                    <div id="binary-code">
-                        {format!("{} -> {}", self.input, binary)}
-                    </div>
-                     )
+                <div id="binary-code">
+                    {format!("{} -> {}", self.input, binary)}
+                </div>
+                 )
             }
-            Err(_) => html!()
+            Err(_) => html!(),
         };
 
         fn view_node(node: &Node<char>) -> Html {
