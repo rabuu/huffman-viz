@@ -119,7 +119,7 @@ impl Component for App {
             None => Err("Code table could not be generated because there is no tree."),
         };
         let view_code_table = match code_table {
-            Ok(table) => {
+            Ok(ref table) => {
                 html!(
                 <table>
                     {for table.iter().map(|(val, bv)| {
@@ -134,6 +134,25 @@ impl Component for App {
                  )
             }
             Err(_) => html!(),
+        };
+
+        let view_encoded_input = match code_table {
+            Ok(ref table) => {
+                let binary: String = self.input.chars().map(|c| {
+                    table.get(&c).unwrap().iter().map(|b| {
+                        match b {
+                            true => "1",
+                            false => "0",
+                        }
+                    }).collect::<String>()
+                }).collect();
+                html!(
+                    <div id="binary-code">
+                        {format!("{} -> {}", self.input, binary)}
+                    </div>
+                     )
+            }
+            Err(_) => html!()
         };
 
         fn view_node(node: &Node<char>) -> Html {
@@ -180,6 +199,7 @@ impl Component for App {
                 </div>
                 <div style=code_table_container_style id="code-table-container">
                     { view_code_table }
+                    { view_encoded_input }
                 </div>
                 <div id="debug-container">
                     { format!("input: {}", self.input) }

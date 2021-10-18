@@ -65,10 +65,10 @@ body {
 	margin: 20px;
 	padding: 30px;
 	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
-	align-items: flex-start;
-	align-content: space-around;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
 	background-color: #a89984;
 	color: #1d2021;
 	border-radius: 5px;
@@ -81,6 +81,13 @@ body {
 
 #code-table-container tr, th {
 	padding: 10px;
+	border: 2px solid #1d2021;
+}
+
+#code-table-container #binary-code {
+	padding: 5px;
+	margin: 15px;
+	font-size: 150%;
 	border: 2px solid #1d2021;
 }
 
@@ -115,10 +122,7 @@ body {
 }
 
 #src-code {
-	position: absolute;
-	bottom: 10px;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	margin: 25px;
 }
 
 #src-code a {
