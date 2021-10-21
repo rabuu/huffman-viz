@@ -74,32 +74,32 @@ where
 
     // generate code table
     pub fn generate_code_table(&self) -> Result<HashMap<T, Vec<bool>>, &'static str> {
-
         if !self.is_built() {
             return Err("Cannot generate a code table from a tree that is not built.");
         }
 
         fn add_table_entry<E>(table: &mut HashMap<E, Vec<bool>>, node: &Node<E>, pre_bits: &[bool])
-        where E: Eq + Hash + Clone
+        where
+            E: Eq + Hash + Clone,
         {
             match node {
                 Node::Tail { val, .. } => {
                     table.insert(val.clone(), pre_bits.to_vec());
                 }
                 Node::Link { left, right, .. } => {
-                    add_table_entry( table, left, &[pre_bits, &[true]].concat());
-                    add_table_entry( table, right, &[pre_bits, &[false]].concat());
+                    add_table_entry(table, left, &[pre_bits, &[true]].concat());
+                    add_table_entry(table, right, &[pre_bits, &[false]].concat());
                 }
             };
         }
 
         let mut table: HashMap<T, Vec<bool>> = HashMap::new();
 
-        if let Some(Node::Link {..}) = self.arena.get(0) {
+        if let Some(Node::Link { .. }) = self.arena.get(0) {
             for node in self.arena.iter() {
-                add_table_entry( &mut table, node, &[]);
+                add_table_entry(&mut table, node, &[]);
             }
-        } else if let Some(Node::Tail {val, ..}) = &self.arena.get(0) {
+        } else if let Some(Node::Tail { val, .. }) = &self.arena.get(0) {
             table.insert(val.clone(), vec![true]);
         }
 
