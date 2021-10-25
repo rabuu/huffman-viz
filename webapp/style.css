@@ -1,6 +1,17 @@
+:root {
+	--bg: #282c34;
+	--dark: #17191e;
+	--bright: #abb2bf;
+	--gray: #828791;
+	--blue: #61afef;
+	--orange: #d19a66;
+	--green: #98c379;
+	--magenta: #c678dd;
+}
+
 body {
-	background-color: #1d2021 !important;
-	color: #ebdbb2 !important;
+	background-color: var(--bg) !important;
+	color: var(--bright) !important;
 	font-family: monospace;
 	text-align: center;
 }
@@ -11,33 +22,33 @@ body {
 	justify-content: center;
 	gap: 50px;
 	padding: 25px;
-	background-color: #458588 !important;
+	background-color: var(--blue) !important;
 	text-align: center;
 }
 
 #controll-container input {
-	color: #282828 !important;
-	background-color: #ebdbb2;
+	color: var(--dark) !important;
+	background-color: var(--bright);
 	max-width: 45vw;
-	border: 2px solid #282828 !important;
+	border: 2px solid var(--dark) !important;
 	font-size: 120%;
 }
 
 #controll-container button {
-	color: #282828 !important;
+	color: var(--dark) !important;
 	text-transform: uppercase;
 	text-decoration: none;
-	background: #ebdbb2;
+	background: var(--bright);
 	padding: 10px 3vw;
-	border: 2px solid #282828 !important;
+	border: 2px solid var(--dark) !important;
 	display: inline-block;
 	transition: all 0.4s ease 0s;
 }
 
 #controll-container button:hover {
-	color: #ebdbb2 !important;
-	background: #d79921;
-	border-color: #d79921 !important;
+	color: var(--dark) !important;
+	background: var(--orange);
+	border-color: var(--orange) !important;
 	transition: all 0.4s ease 0s;
 }
 
@@ -56,8 +67,8 @@ body {
 	gap: 10px;
 	margin: 20px;
 	padding: 30px;
-	background-color: #ebdbb2;
-	color: #1d2021;
+	background-color: var(--bright);
+	color: var(--dark);
 	border-radius: 5px;
 }
 
@@ -69,33 +80,33 @@ body {
 	justify-content: center;
 	align-items: center;
 	gap: 20px;
-	background-color: #a89984;
-	color: #1d2021;
+	background-color: var(--gray);
+	color: var(--dark);
 	border-radius: 5px;
 }
 
 #code-table-container table {
-	border: 2px dotted #1d2021;
+	border: 2px dotted var(--dark);
 	padding: 2px;
 }
 
 #code-table-container tr, th {
 	padding: 10px;
-	border: 2px solid #1d2021;
+	border: 2px solid var(--dark);
 }
 
 #code-table-container #binary-code {
 	padding: 5px;
 	margin: 15px;
 	font-size: 150%;
-	border: 2px solid #1d2021;
+	border: 2px solid var(--dark);
 }
 
 #debug-container {
 	display: none;
 	margin: 10px;
 	padding: 15px;
-	background-color: #282828;
+	background-color: var(--dark);
 	border-radius: 5px;
 }
 
@@ -108,11 +119,11 @@ body {
 
 .tail {
 	border-radius: 15px;
-	background-color: #b8bb26 !important;
+	background-color: var(--green) !important;
 }
 
 .link {
-	background-color: #d3869b !important;
+	background-color: var(--magenta) !important;
 }
 
 .branches-container {
@@ -126,7 +137,7 @@ body {
 }
 
 #src-code a {
-	color: #ebdbb2 !important;
+	color: var(--bright) !important;
 	text-decoration: none;
 }
 
