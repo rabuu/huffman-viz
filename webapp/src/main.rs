@@ -123,6 +123,10 @@ impl Component for App {
                 html!(
                 <table>
                     {for table.iter().map(|(val, bv)| {
+                        let val = match val {
+                            ' ' => '⎵',
+                            v @ _ => *v,
+                        };
                         html!(
                             <tr>
                                 <th>{val}</th>
