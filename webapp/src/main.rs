@@ -165,6 +165,10 @@ impl Component for App {
         fn view_node(node: &Node<char>) -> Html {
             match node {
                 Node::Tail { freq, val } => {
+                    let val = match val {
+                        ' ' => '⎵',
+                        v @ _ => *v,
+                    };
                     html!(
                         <div class="node tail">
                             {format!("{} ({})", val, freq)}
