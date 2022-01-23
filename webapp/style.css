@@ -1,12 +1,12 @@
 :root {
-	--bg: #282c34;
-	--dark: #17191e;
-	--bright: #abb2bf;
+	--bg: #222629;
+	--dark: #1d2021;
+	--bright: #acb0b2;
 	--gray: #828791;
-	--blue: #61afef;
-	--orange: #d19a66;
-	--green: #98c379;
-	--magenta: #c678dd;
+	--blue: #458588;
+	--orange: #fabd2f;
+	--green: #b8bb26;
+	--magenta: #d3869b;
 }
 
 body {
