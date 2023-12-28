@@ -221,7 +221,7 @@ impl Component for App {
                 <pre>{ view_tree_debug }</pre>
                 </div>
                 <div id="src-code">
-                    <a href="https://gitlab.com/rabuu/huffman-viz">{"source code"}</a>
+                    <a href="https://github.com/rabuu/huffman-viz">{"source code @ github"}</a>
                 </div>
             </div>
         }
