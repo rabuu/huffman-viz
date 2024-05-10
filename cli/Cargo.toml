@@ -1,8 +1,8 @@
 [package]
-name = "huffman-viz-webapp"
+name = "huffman-viz-cli"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 huffman = { workspace = true }
-yew = "0.18"
+clap = { version = "4", features = ["derive"] }

@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = [
+	"huffman",
+	"cli",
+	"webapp",
+]
+
+[workspace.dependencies]
+huffman = { path = "huffman" }
